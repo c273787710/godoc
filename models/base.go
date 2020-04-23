@@ -9,6 +9,7 @@ import (
 func init(){
 	orm.RegisterModel(new(AdminModel))
 	orm.RegisterModel(new(TokenModel))
+	orm.RegisterModel(new(CateModel))
 }
 
 func GetTableName(name string)string{

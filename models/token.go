@@ -1,11 +1,11 @@
 package models
 
 import (
-	"doc/util"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"time"
+	"godoc/util"
 )
 
 type TokenModel struct {
@@ -48,4 +48,27 @@ func CreateToken(uid uint)(string,error){
 	}
 	syncToken[model.Value] = model
 	return model.Value,nil
+}
+
+func GetTokenModelByToken(token string) *TokenModel{
+	model,ok := syncToken[token]
+	o := orm.NewOrm()
+	if ok {
+		//判断是否有效
+		if model.ExpireTime >= uint(time.Now().Unix()) {
+			model.ExpireTime = uint(time.Now().Unix()) + 86400
+			model.UpdateTime = uint(time.Now().Unix())
+			o.Update(model)
+			syncToken[token] = model
+			return model
+		}
+	}
+	delete(syncToken,token)
+	model = new(TokenModel)
+	err := o.QueryTable(GetTableName("token")).Filter("value",token).Filter("expire_time__gte",time.Now().Unix()).
+		OrderBy("-id").One(model)
+	if err != nil {
+		return nil
+	}
+	return model
 }

@@ -8,7 +8,7 @@
 package routers
 
 import (
-	"doc/controllers/admin"
+	"godoc/controllers/admin"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/plugins/cors"
 )
@@ -22,8 +22,11 @@ func init() {
 		ExposeHeaders:    []string{"Content-Length", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers", "Content-Type"},
 		AllowCredentials: true,
 	}))
-	ns := beego.NewNamespace("/api/admin",
-		beego.NSNamespace("/login",beego.NSInclude(&admin.LoginController{})),
+	ns := beego.NewNamespace("/api",
+		beego.NSNamespace("/admin",
+			beego.NSInclude(&admin.LoginController{})),
+		beego.NSNamespace("/admin/cate",
+			beego.NSInclude(&admin.CateController{})),
 	)
 	beego.AddNamespace(ns)
 }

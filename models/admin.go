@@ -1,9 +1,10 @@
 package models
 
 import (
-	"doc/util"
+	"godoc/util"
 	"errors"
 	"github.com/astaxie/beego/orm"
+	"fmt"
 )
 
 type AdminModel struct {
@@ -23,6 +24,7 @@ func(a *AdminModel)TableName()string{
 }
 
 func (a *AdminModel)CheckLoginByUsername(pass string)error{
+	fmt.Print(util.MD5Encry("123456"))
 	o := orm.NewOrm()
 	err := o.QueryTable(GetTableName("admin")).Filter("username",a.Username).One(a)
 	if err == orm.ErrNoRows{
@@ -47,6 +49,15 @@ func (a *AdminModel)CreateToken()error{
 	}
 	a.Token = token
 	return nil
+}
+func GetAdminInfoById(id uint)*AdminModel{
+	model := new(AdminModel)
+	model.Id = id
+	o := orm.NewOrm()
+	if err := o.Read(model);err != nil {
+		return nil
+	}
+	return model
 }
 
 

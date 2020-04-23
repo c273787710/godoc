@@ -1,8 +1,9 @@
 package admin
 
 import (
-	"doc/models"
+	"godoc/models"
 	"encoding/json"
+	"strconv"
 )
 
 type LoginController struct {
@@ -51,3 +52,47 @@ func (l *LoginController)Login(){
 	l.Json(rtn)
 }
 
+//@Title Login
+//@Description 通过token和uid获取账号信息
+//@Param token header string true "token"
+//@Param uid header string true "用户uid"
+//@Success 200
+//@router /login [get]
+func (l *LoginController)GetInfo(){
+	rtn := new(rtnTpl)
+	uidString := l.Ctx.Request.Header.Get("uid")
+	token := l.Ctx.Request.Header.Get("token")
+	if uidString == "" || token == "" {
+		rtn.Code = "1004"
+		rtn.Msg = "用户登陆失效"
+		l.Json(rtn)
+	}
+	uid,err := strconv.Atoi(uidString)
+	if err != nil {
+		rtn.Code = "1004"
+		rtn.Msg = "登陆信息错误"
+		l.Json(rtn)
+	}
+	model := models.GetTokenModelByToken(token)
+	if model == nil {
+		rtn.Code = "1005"
+		rtn.Msg = "用户登陆失效"
+		l.Json(rtn)
+	}
+	if uint(uid) != model.Uid {
+		rtn.Code = "1006"
+		rtn.Msg = "TOKEN无效"
+		l.Json(rtn)
+	}
+	admin := models.GetAdminInfoById(model.Uid)
+	if admin == nil {
+		rtn.Code = "1007"
+		rtn.Msg = "TOKEN无效"
+		l.Json(rtn)
+	}
+	admin.Token = token
+	rtn.Code = "0"
+	rtn.Msg = "登录成功"
+	rtn.Data = admin
+	l.Json(rtn)
+}
