@@ -96,3 +96,50 @@ func (l *LoginController)GetInfo(){
 	rtn.Data = admin
 	l.Json(rtn)
 }
+
+
+//@Title Logout
+//@Description 超级管理员后台退出登录
+//@Success 200
+//@router /logout [get]
+func (l *LoginController)Logout(){
+	token := l.Ctx.Input.Header("token")
+	uid := l.Ctx.Input.Header("uid")
+	rtn := new(rtnTpl)
+	if token == "" || uid == "" {
+		rtn.Code = "0"
+		rtn.Msg = "退出成功"
+		l.Json(rtn)
+	}
+	id,err := strconv.Atoi(uid)
+	if err != nil {
+		rtnTpl := new(rtnTpl)
+		rtnTpl.Code = "0"
+		rtnTpl.Msg = "退出成功"
+		l.Json(rtnTpl)
+	}
+	tokenModel := models.GetTokenModelByToken(token)
+	if tokenModel == nil {
+		rtnTpl := new(rtnTpl)
+		rtnTpl.Code = "0"
+		rtnTpl.Msg = "退出成功"
+		l.Json(rtnTpl)
+	}
+	err = tokenModel.InvalidToken()
+	if tokenModel.Uid != uint(id) {
+		rtnTpl := new(rtnTpl)
+		rtnTpl.Code = "0"
+		rtnTpl.Msg = "退出成功"
+		l.Json(rtnTpl)
+	}
+	if err != nil {
+		rtnTpl := new(rtnTpl)
+		rtnTpl.Code = "1008"
+		rtnTpl.Msg = err.Error()
+		l.Json(rtnTpl)
+	}
+	rtnTpl := new(rtnTpl)
+	rtnTpl.Code = "0"
+	rtnTpl.Msg = "退出成功"
+	l.Json(rtnTpl)
+}

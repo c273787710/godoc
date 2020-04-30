@@ -66,6 +66,15 @@ func DeleteCate(id uint) error{
 	_,err := o.Delete(model)
 	return err
 }
+func GetCateByID(id uint)*CateModel{
+	model := new(CateModel)
+	model.Id = id
+	err := orm.NewOrm().Read(model)
+	if err != nil {
+		return nil
+	}
+	return model
+}
 
 
 

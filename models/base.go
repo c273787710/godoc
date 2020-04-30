@@ -10,6 +10,7 @@ func init(){
 	orm.RegisterModel(new(AdminModel))
 	orm.RegisterModel(new(TokenModel))
 	orm.RegisterModel(new(CateModel))
+	orm.RegisterModel(new(ArticleModel))
 }
 
 func GetTableName(name string)string{

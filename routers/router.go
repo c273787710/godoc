@@ -27,6 +27,8 @@ func init() {
 			beego.NSInclude(&admin.LoginController{})),
 		beego.NSNamespace("/admin/cate",
 			beego.NSInclude(&admin.CateController{})),
+		beego.NSNamespace("/admin/article",
+			beego.NSInclude(&admin.ArticleController{})),
 	)
 	beego.AddNamespace(ns)
 }

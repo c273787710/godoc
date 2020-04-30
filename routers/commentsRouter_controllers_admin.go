@@ -7,6 +7,42 @@ import (
 
 func init() {
 
+    beego.GlobalControllerRouter["godoc/controllers/admin:ArticleController"] = append(beego.GlobalControllerRouter["godoc/controllers/admin:ArticleController"],
+        beego.ControllerComments{
+            Method: "Add",
+            Router: `/add`,
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["godoc/controllers/admin:ArticleController"] = append(beego.GlobalControllerRouter["godoc/controllers/admin:ArticleController"],
+        beego.ControllerComments{
+            Method: "Del",
+            Router: `/del`,
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["godoc/controllers/admin:ArticleController"] = append(beego.GlobalControllerRouter["godoc/controllers/admin:ArticleController"],
+        beego.ControllerComments{
+            Method: "Edit",
+            Router: `/edit`,
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["godoc/controllers/admin:ArticleController"] = append(beego.GlobalControllerRouter["godoc/controllers/admin:ArticleController"],
+        beego.ControllerComments{
+            Method: "List",
+            Router: `/list`,
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
     beego.GlobalControllerRouter["godoc/controllers/admin:CateController"] = append(beego.GlobalControllerRouter["godoc/controllers/admin:CateController"],
         beego.ControllerComments{
             Method: "Add",
@@ -56,6 +92,15 @@ func init() {
         beego.ControllerComments{
             Method: "GetInfo",
             Router: `/login`,
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["godoc/controllers/admin:LoginController"] = append(beego.GlobalControllerRouter["godoc/controllers/admin:LoginController"],
+        beego.ControllerComments{
+            Method: "Logout",
+            Router: `/logout`,
             AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(),
             Filters: nil,

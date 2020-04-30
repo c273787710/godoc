@@ -72,3 +72,11 @@ func GetTokenModelByToken(token string) *TokenModel{
 	}
 	return model
 }
+
+func (t *TokenModel)InvalidToken() error{
+	delete(syncToken,t.Value)
+	t.UpdateTime = uint(time.Now().Unix())
+	t.ExpireTime = uint(time.Now().Unix())
+	_,err := orm.NewOrm().Update(t)
+	return err
+}
